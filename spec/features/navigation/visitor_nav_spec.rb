@@ -1,8 +1,3 @@
-# As a visitor
-# I see a navigation bar
-# This navigation bar includes links for the following:
-# - a link to log in ("/login")
-# - a link to the user registration page ("/register")
 require 'rails_helper'
 
 RSpec.describe 'Nav Bar' do
