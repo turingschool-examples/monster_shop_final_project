@@ -1,7 +1,6 @@
 # As a visitor
 # I see a navigation bar
 # This navigation bar includes links for the following:
-# - a link to return to the welcome / home page of the application ("/")
 # - a link to browse all items for sale ("/items")
 # - a link to see all merchants ("/merchants")
 # - a link to my shopping cart ("/cart")
@@ -14,12 +13,19 @@ RSpec.describe 'Nav Bar' do
     it 'has an icon for going home' do
       image_url = "https://www.freepngimg.com/thumb/monster/34201-3-blue-monster-transparent-image-thumb.png"
       visit root_path
-
       within "nav" do
         expect(page).to have_css("img[src*='#{image_url}']")
         find("img[src*='#{image_url}']").click
-        expect(current_path).to eq(root_path)
       end
+      expect(current_path).to eq(root_path)
+    end
+    it 'has a link to see all items for sale' do
+      visit root_path
+      within "nav" do
+        expect(page).to have_link("Items")
+        click_on("Items")
+      end
+      expect(current_path).to eq(items_path)
     end
   end
 end
