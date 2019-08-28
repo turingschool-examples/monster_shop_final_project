@@ -16,6 +16,7 @@ RSpec.describe 'Nav Bar' do
       end
       expect(current_path).to eq(root_path)
     end
+
     it 'has a link to see all items for sale' do
       visit root_path
       within "nav" do
@@ -24,6 +25,7 @@ RSpec.describe 'Nav Bar' do
       end
       expect(current_path).to eq(items_path)
     end
+
     it 'has a link to see all merchants' do
       visit root_path
       within "nav" do
@@ -32,6 +34,7 @@ RSpec.describe 'Nav Bar' do
       end
       expect(current_path).to eq(merchants_path)
     end
+
     it 'has a link to see cart' do
       visit root_path
       within "nav" do
@@ -39,6 +42,24 @@ RSpec.describe 'Nav Bar' do
         click_on("Cart: 0")
       end
       expect(current_path).to eq(cart_path)
+    end
+
+    it 'has a link to login' do
+      visit root_path
+      within "nav" do
+        expect(page).to have_link("Login")
+        click_on("Login")
+      end
+      expect(current_path).to eq(login_path)
+    end
+
+    it 'has a link to register' do
+      visit root_path
+      within "nav" do
+        expect(page).to have_link("Register")
+        click_on("Register")
+      end
+      expect(current_path).to eq(register_path)
     end
   end
 end
