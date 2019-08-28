@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  get '/', to: 'welcome#index', as: "root"
+  get '/', to: 'welcome#index', as: :root
+  get '/register', to: 'users#new', as: :register
+  get '/login', to: 'sessions#new', as: :login
+
   get "/merchants", to: "merchants#index"
   get "/merchants/new", to: "merchants#new"
   get "/merchants/:id", to: "merchants#show"
