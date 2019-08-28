@@ -1,9 +1,6 @@
 # As a visitor
 # I see a navigation bar
 # This navigation bar includes links for the following:
-# - a link to browse all items for sale ("/items")
-# - a link to see all merchants ("/merchants")
-# - a link to my shopping cart ("/cart")
 # - a link to log in ("/login")
 # - a link to the user registration page ("/register")
 require 'rails_helper'
@@ -26,6 +23,22 @@ RSpec.describe 'Nav Bar' do
         click_on("Items")
       end
       expect(current_path).to eq(items_path)
+    end
+    it 'has a link to see all merchants' do
+      visit root_path
+      within "nav" do
+        expect(page).to have_link("Merchants")
+        click_on("Merchants")
+      end
+      expect(current_path).to eq(merchants_path)
+    end
+    it 'has a link to see cart' do
+      visit root_path
+      within "nav" do
+        expect(page).to have_link("Cart: 0")
+        click_on("Cart: 0")
+      end
+      expect(current_path).to eq(cart_path)
     end
   end
 end
