@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   get '/', to: 'welcome#index', as: :root
   get '/register', to: 'users#new', as: :register
   get '/login', to: 'sessions#new', as: :login
+  get '/logout', to: 'sessions#logout'
+  get '/profile', to: 'users#show'
 
   get "/merchants", to: "merchants#index"
   get "/merchants/new", to: "merchants#new"
