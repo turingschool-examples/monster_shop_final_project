@@ -56,5 +56,11 @@ RSpec.describe 'Nav Bar' do
       end
       expect(current_path).to eq(register_path)
     end
+    it 'doesnt have a link to profile' do
+      visit root_path
+      within "nav" do
+        expect(page).to_not have_link("My Profile")
+      end
+    end
   end
 end
