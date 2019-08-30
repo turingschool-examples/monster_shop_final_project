@@ -10,7 +10,10 @@ Rails.application.routes.draw do
   namespace :merchant do
     get '/', to: 'dashboard#index', as: :dashboard
   end
-
+  namespace :admin do
+    get '/', to: 'dashboard#index', as: :dashboard
+    get '/users', to: 'dashboard#index'
+  end
 
   get "/merchants", to: "merchants#index"
   get "/merchants/new", to: "merchants#new"
