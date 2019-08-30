@@ -14,6 +14,10 @@ class ApplicationController < ActionController::Base
 
   end
 
+  def current_user?
+
+  end
+
   def current_user_merchant?
       # current_user.merchant_id
   end

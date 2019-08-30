@@ -1,6 +1,24 @@
 require 'rails_helper'
 
 RSpec.describe 'Nav Bar' do
+  describe 'restrictions for a visitor' do
+    before(:each) do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(nil)
+      allow_any_instance_of(ApplicationController).to receive(:current_admin?).and_return(false)
+      allow_any_instance_of(ApplicationController).to receive(:current_user_merchant?).and_return(false)
+    end
+    it 'I can not visit profile, merchant, or admin' do
+      visit '/profile'
+      expect(page.status_code).to eq(404)
+
+      visit '/merchant'
+      expect(page.status_code).to eq(404)
+
+      visit '/admin'
+      expect(page.status_code).to eq(404)
+    end
+  end
+
   describe 'for a visitor' do
     it 'has an icon for going home' do
       image_url = "https://www.freepngimg.com/thumb/monster/34201-3-blue-monster-transparent-image-thumb.png"
