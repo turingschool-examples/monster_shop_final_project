@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user?
-
+    !current_user.nil?
   end
 
   def current_user_merchant?
