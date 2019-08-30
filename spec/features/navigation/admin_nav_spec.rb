@@ -8,6 +8,19 @@ RSpec.describe 'Nav Bar' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
       allow_any_instance_of(ApplicationController).to receive(:current_admin?).and_return(true)
     end
+    it 'has restrictions for admin' do
+      visit '/profile'
+      expect(page.status_code).to eq(200)
+
+      visit '/merchant'
+      expect(page.status_code).to eq(404)
+
+      visit '/admin'
+      expect(page.status_code).to eq(200)
+
+      visit '/cart'
+      expect(page.status_code).to eq(404)
+    end
     it 'i see the same links as a regular user except for cart' do
       image_url = "https://www.freepngimg.com/thumb/monster/34201-3-blue-monster-transparent-image-thumb.png"
       visit root_path

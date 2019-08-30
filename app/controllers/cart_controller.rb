@@ -1,4 +1,6 @@
 class CartController < ApplicationController
+  before_action :check_not_admin
+
   def add_item
     item = Item.find(params[:item_id])
     cart.add_item(item.id.to_s)
@@ -28,5 +30,12 @@ class CartController < ApplicationController
       return remove_item if cart.quantity_zero?(params[:item_id])
     end
     redirect_to "/cart"
+  end
+
+
+  private
+
+  def check_not_admin
+    render file: 'public/404', status: 404 if current_admin?
   end
 end
