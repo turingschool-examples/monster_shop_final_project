@@ -1,11 +1,3 @@
-
-# When I fill in this form completely,
-# And with a unique email address not already in the system
-# My details are saved in the database
-# Then I am logged in as a registered user
-# I am taken to my profile page ("/profile")
-# I see a flash message indicating that I am now registered and logged in
-
 require 'rails_helper'
 
 RSpec.describe 'As a visitor' do
@@ -48,7 +40,23 @@ RSpec.describe 'As a visitor' do
     end
 
     it 'I can only create user if i have a unique email' do
+      @user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc')
 
+      visit '/register'
+
+      fill_in "Name", with: "Brian"
+      fill_in "Address", with: "123 OtherBrian St."
+      fill_in "City", with: "Denver"
+      fill_in "State", with: "CO"
+      fill_in "Zip", with: 80203
+      fill_in "Email", with: "brian@hotmail.com"
+      fill_in "Password", with: "climbingiscool"
+      fill_in "Password confirmation", with: "climbingiscool"
+
+      click_button "Register"
+
+      expect(page).to have_button('Register')
+      expect(page).to have_content("There is already a user that exists with this email.")
     end
   end
 end
