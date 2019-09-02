@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'As a registered user' do
   describe 'When I visit my profile page' do
     before(:each) do
+      User.create(name: "mike", address: '123 dao ave', city: "Sparta", state: "NJ", zip: 30450, email: 'mdao@gmail.com', password: '123dao', password_confirmation: '123dao')
       @user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc', password_confirmation: '123abc')
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
@@ -79,14 +80,22 @@ RSpec.describe 'As a registered user' do
       expect(page).to have_button("Change Password")
       expect(page).to have_content("Password confirmation doesn't match Password")
     end
+
+    it "I cant change my email to one that already exists" do
+      visit '/profile/edit'
+
+      fill_in 'Email', with:  "mdao@gmail.com"
+
+      click_button "Update"
+
+      expect(page).to have_button("Update")
+      expect(page).to have_content("Email has already been taken")
+    end
   end
 end
 # As a registered user
-# When I visit my profile page
-# I see a link to edit my password
-# When I click on the link to edit my password
-# I see a form with fields for a new password, and a new password confirmation
-# When I fill in the same password in both fields
-# And I submit the form
-# Then I am returned to my profile page
-# And I see a flash message telling me that my password is updated
+# When I attempt to edit my profile data
+# If I try to change my email address to one that belongs to another user
+# When I submit the form
+# Then I am returned to the profile edit page
+# And I see a flash message telling me that email address is already in use
