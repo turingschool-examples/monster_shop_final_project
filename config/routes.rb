@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get '/register', to: 'users#new', as: :register
   get '/login', to: 'sessions#new', as: :login
   get '/logout', to: 'sessions#logout'
+  post '/sessions', to: 'sessions#create'
   get '/profile', to: 'users#show'
   get '/profile/edit', to: 'users#edit'
   resources :users, only: [:create, :update]
