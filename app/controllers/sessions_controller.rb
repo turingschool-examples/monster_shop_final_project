@@ -1,7 +1,10 @@
 class SessionsController <ApplicationController
 
   def new
-
+    if current_user
+      flash[:success] = "You are already logged in."
+      redirect_user(current_user)
+    end
   end
 
   def logout
