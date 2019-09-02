@@ -104,4 +104,18 @@ RSpec.describe "Logging In" do
       expect(current_path).to eq('/admin')
     end
   end
+
+  it 'keeps users logged in' do
+    user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc')
+
+    visit '/login'
+
+    fill_in :email, with: user.email
+    fill_in :password, with: user.password
+
+    click_button "Log In"
+
+    visit '/profile'
+    expect(page).to have_content(user.name)
+  end
 end
