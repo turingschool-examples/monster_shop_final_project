@@ -16,6 +16,9 @@ class UsersController <ApplicationController
       flash[:success] = "#{@user.name}, you are now registered and logged in."
       redirect_to profile_path
     elsif email_exists?(@user)
+      @user.email = ""
+      @user.password = ""
+      @user.password_confirmation = ""
       flash[:error] = "There is already a user that exists with this email."
       render :new
     else
