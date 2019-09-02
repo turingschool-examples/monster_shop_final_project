@@ -15,8 +15,11 @@ class UsersController <ApplicationController
       session[:user_id] = @user.id
       flash[:success] = "#{@user.name}, you are now registered and logged in."
       redirect_to profile_path
-    else
+    elsif email_exists?(@user)
       flash[:error] = "There is already a user that exists with this email."
+      render :new
+    else
+      flash[:error] = "Please fill in all fields in order to register"
       render :new
     end
   end
@@ -29,5 +32,9 @@ class UsersController <ApplicationController
 
   def check_for_user
     render file: 'public/404', status: 404 unless current_user?
+  end
+
+  def email_exists?(user)
+    user.errors.full_messages.include?("Email has already been taken")
   end
 end
