@@ -58,5 +58,26 @@ RSpec.describe 'As a visitor' do
       expect(page).to have_button('Register')
       expect(page).to have_content("There is already a user that exists with this email.")
     end
+
+    it "I can only create user if all fields are filled in" do
+#       As a visitor
+# When I visit the user registration page
+# And I do not fill in this form completely,
+# I am returned to the registration page
+# And I see a flash message indicating that I am missing required fields
+      visit '/register'
+
+      fill_in "Name", with: "Brian"
+      fill_in "Address", with: "123 OtherBrian St."
+      fill_in "Zip", with: 80203
+      fill_in "Email", with: "brian@hotmail.com"
+      fill_in "Password", with: "climbingiscool"
+      fill_in "Password confirmation", with: "climbingiscool"
+
+      click_button 'Register'
+      
+      expect(page).to have_button("Register")
+      expect(page).to have_content("Please fill in all fields in order to register")
+    end
   end
 end
