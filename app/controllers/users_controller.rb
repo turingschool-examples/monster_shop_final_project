@@ -30,7 +30,7 @@ class UsersController <ApplicationController
       flash[:error] = @user.errors.full_messages
       render :edit_password
     else
-      render[:error] = @user.errors.full_messages
+      flash[:error] = @user.errors.full_messages
       render :edit
     end
   end
