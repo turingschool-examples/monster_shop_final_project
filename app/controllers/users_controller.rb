@@ -13,14 +13,24 @@ class UsersController <ApplicationController
     @user = current_user
   end
 
+  def edit_password
+    @user = current_user
+  end
+
   def update
     @user = current_user
     @user.update(user_params)
-    if @user.save
+    if @user.save && user_params.include?("password")
+      flash[:success] = "Password updated successfully"
+      redirect_to profile_path
+    elsif @user.save
       flash[:success] = 'Profile updated successfully'
       redirect_to profile_path
-    else
+    elsif @user.errors.full_messages.include?("Password confirmation doesn't match Password")
       flash[:error] = @user.errors.full_messages
+      render :edit_password
+    else
+      render[:error] = @user.errors.full_messages
       render :edit
     end
   end
