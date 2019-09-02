@@ -14,9 +14,14 @@ class SessionsController <ApplicationController
 
   def create
     user = User.find_by(email: params[:email])
-    session[:user_id] = user.id
-    flash[:success] = "Welcome, #{user.name}!"
-    redirect_user(user)
+    if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
+      flash[:success] = "Welcome, #{user.name}!"
+      redirect_user(user)
+    else
+      flash[:error] = "Sorry, we don't recognize that email and password"
+      redirect_to '/login'
+    end
   end
 
   private

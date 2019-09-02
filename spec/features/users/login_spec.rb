@@ -1,6 +1,34 @@
 require 'rails_helper'
 
 RSpec.describe "Logging In" do
+  it 'keeps users logged in' do
+    user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc')
+
+    visit '/login'
+
+    fill_in :email, with: user.email
+    fill_in :password, with: user.password
+
+    click_button "Log In"
+
+    visit '/profile'
+    expect(page).to have_content(user.name)
+  end
+
+  it "cannot login with bad credentials" do
+    user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc')
+
+    visit '/login'
+
+    fill_in :email, with: user.email
+    fill_in :password, with: "not the right password"
+
+    click_button "Log In"
+
+    expect(current_path).to eq('/login')
+    expect(page).to have_content("Sorry, we don't recognize that email and password")
+  end
+
   context "as a regular user" do
     it "can login with valid information" do
       user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc')
@@ -103,19 +131,5 @@ RSpec.describe "Logging In" do
       expect(page).to have_content("You are already logged in.")
       expect(current_path).to eq('/admin')
     end
-  end
-
-  it 'keeps users logged in' do
-    user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc')
-
-    visit '/login'
-
-    fill_in :email, with: user.email
-    fill_in :password, with: user.password
-
-    click_button "Log In"
-
-    visit '/profile'
-    expect(page).to have_content(user.name)
   end
 end
