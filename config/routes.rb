@@ -3,11 +3,13 @@ Rails.application.routes.draw do
 
   get '/', to: 'welcome#index', as: :root
   get '/register', to: 'users#new', as: :register
-  post '/users', to: 'users#create'
   get '/login', to: 'sessions#new', as: :login
   get '/logout', to: 'sessions#logout'
   get '/profile', to: 'users#show'
-  get '/profile/edit', to: 'user#edit'
+  get '/profile/edit', to: 'users#edit'
+  resources :users, only: [:create, :update]
+  # post '/users', to: 'users#create'
+  # patch '/users/:id', to: 'users#update'
   # get '/merchant', to: 'dashboard#index'
   namespace :merchant do
     get '/', to: 'dashboard#index', as: :dashboard
