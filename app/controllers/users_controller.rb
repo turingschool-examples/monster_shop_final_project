@@ -10,6 +10,19 @@ class UsersController <ApplicationController
   end
 
   def edit
+    @user = current_user
+  end
+
+  def update
+    @user = current_user
+    @user.update(user_params)
+    if @user.save
+      flash[:success] = 'Profile updated successfully'
+      redirect_to profile_path
+    else
+      flash[:error] = @user.errors.full_messages
+      render :edit
+    end
   end
 
   def create
