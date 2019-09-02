@@ -40,7 +40,7 @@ RSpec.describe 'As a visitor' do
     end
 
     it 'I can only create user if i have a unique email' do
-      @user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc')
+      @user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc', password_confirmation: '123abc')
 
       visit '/register'
 
