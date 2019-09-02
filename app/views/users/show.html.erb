@@ -1,0 +1,7 @@
+<h1><%= @user.name %></h1>
+<p><%= @user.address %></p>
+<p><%= @user.city %>, <%= @user.state %> <%= @user.zip %></p>
+<p><%= @user.email %></p>
+
+<%= link_to "Edit Profile", "/profile/edit" %>
+<%= link_to "Change Password", "/profile/edit_password" %>
