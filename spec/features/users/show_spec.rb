@@ -38,9 +38,7 @@ RSpec.describe 'As a registered user' do
     end
 
     it "I can edit profile info" do
-      visit '/profile'
-
-      click_link "Edit Profile"
+      visit '/profile/edit'
 
       fill_in 'City', with:  "Honolulu"
       fill_in 'State', with:  "HI"
@@ -52,16 +50,43 @@ RSpec.describe 'As a registered user' do
       expect(page).to have_content("Profile updated successfully")
       expect(page).to have_content("123 Zanti St\nHonolulu, HI 10189")
     end
+
+    it 'I can edit my password' do
+      visit '/profile'
+
+      click_link "Change Password"
+
+      expect(current_path).to eq('/profile/edit_password')
+      fill_in "Password", with: "123changepassword"
+      fill_in "Password confirmation", with: "123changepassword"
+
+      click_button "Change Password"
+
+      expect(current_path).to eq('/profile')
+      expect(page).to have_content("Password updated successfully")
+    end
+
+    it 'I cant change password if fields dont match' do
+      visit '/profile'
+
+      click_link "Change Password"
+
+      fill_in "Password", with: "123changepassword"
+      fill_in "Password confirmation", with: "notmatching"
+
+      click_button "Change Password"
+
+      expect(page).to have_button("Change Password")
+      expect(page).to have_content("Password confirmation doesn't match Password")
+    end
   end
 end
 # As a registered user
 # When I visit my profile page
-# I see a link to edit my profile data
-# When I click on the link to edit my profile data
-# I see a form like the registration page
-# The form is prepopulated with all my current information except my password
-# When I change any or all of that information
+# I see a link to edit my password
+# When I click on the link to edit my password
+# I see a form with fields for a new password, and a new password confirmation
+# When I fill in the same password in both fields
 # And I submit the form
 # Then I am returned to my profile page
-# And I see a flash message telling me that my data is updated
-# And I see my updated information
+# And I see a flash message telling me that my password is updated
