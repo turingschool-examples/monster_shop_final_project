@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get '/login', to: 'sessions#new', as: :login
   get '/logout', to: 'sessions#logout'
   get '/profile', to: 'users#show'
+  get '/profile/edit', to: 'user#edit'
   # get '/merchant', to: 'dashboard#index'
   namespace :merchant do
     get '/', to: 'dashboard#index', as: :dashboard
