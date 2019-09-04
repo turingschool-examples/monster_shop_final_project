@@ -11,4 +11,10 @@ class User <ApplicationRecord
                         :email
 
   validates_uniqueness_of :email
+
+  enum role: ['default', 'merchant_employee', 'merchant_admin', 'admin']
+
+  def merchant?
+    merchant_employee? || merchant_admin?
+  end
 end
