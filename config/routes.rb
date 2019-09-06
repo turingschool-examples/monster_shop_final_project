@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get '/profile/edit_password', to: 'users#edit_password'
 
   get '/profile/orders', to: 'user/orders#index'
+  get '/profile/orders/:id', to: "user/orders#show"
 
 
 
