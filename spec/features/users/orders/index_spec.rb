@@ -52,11 +52,12 @@ RSpec.describe 'User Order Page As a User' do
       end
 
       within "#user-orders-#{@order_1.id}" do
-        click_on @order_1.id
+        click_link @order_1.id
       end
 
-      expect(current_path).to eq("/orders/#{@order_1.id}")
+      expect(current_path).to eq("/profile/orders/#{@order_1.id}")
 
     end
+
   end
 end
