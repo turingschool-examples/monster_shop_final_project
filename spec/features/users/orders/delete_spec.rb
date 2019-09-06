@@ -1,6 +1,15 @@
+
+# When I click the cancel button for an order, the following happens:
+# - Each row in the "order items" table is given a status of "unfulfilled"
+# - The order itself is given a status of "cancelled"
+# - Any item quantities in the order that were previously fulfilled have their quantities returned to their respective merchant's inventory for that item.
+# - I am returned to my profile page
+# - I see a flash message telling me the order is now cancelled
+# - And I see that this order now has an updated status of "cancelled"
+
 require 'rails_helper'
 
-RSpec.describe 'User Order Page As a User' do
+RSpec.describe 'User Deletes Orders' do
   describe 'when I visit an orders show page from my profile' do
     before(:each) do
       @meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
@@ -13,55 +22,23 @@ RSpec.describe 'User Order Page As a User' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
       @order_1 = @user.orders.create(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033)
-      @order_2 = @user.orders.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80204)
+      @order_2 = @user.orders.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80204, status: 1)
 
       @order_1.item_orders.create!(item: @tire, price: @tire.price, quantity: 2)
       @order_1.item_orders.create!(item: @pull_toy, price: @pull_toy.price, quantity: 3)
       @order_2.item_orders.create!(item: @dog_bone, price: @dog_bone.price, quantity: 2)
       @order_2.item_orders.create!(item: @pull_toy, price: @pull_toy.price, quantity: 2)
       @order_2.item_orders.create!(item: @tire, price: @tire.price, quantity: 2)
+
     end
 
-    it "the uri looks like /profile/orders/:id" do
-      visit '/profile/orders'
-
-      within "#user-orders-#{@order_1.id}" do
-        click_link @order_1.id
-      end
-
-      expect(current_path).to eq("/profile/orders/#{@order_1.id}")
-    end
-
-    it "the order show page has order and item info" do
+    it "I can see a button to cancel the order if the order is still pending" do
       visit "/profile/orders/#{@order_1.id}"
 
-      within "#user-orders-#{@order_1.id}" do
-        expect(page).to have_content(@order_1.id)
-        expect(page).to have_content(@order_1.created_at)
-        expect(page).to have_content(@order_1.updated_at)
-        expect(page).to have_content(@order_1.status)
-      end
+      expect(page).to have_link("Cancel Order")
 
-      within "#item-#{@tire.id}" do
-        expect(page).to have_css("img[src*='#{@tire.image}']")
-        expect(page).to have_content(@tire.name)
-        expect(page).to have_content(@tire.description)
-        expect(page).to have_content("2")
-        expect(page).to have_content("$100")
-        expect(page).to have_content("$200")
-      end
-
-      within "#item-#{@pull_toy.id}" do
-        expect(page).to have_css("img[src*='#{@pull_toy.image}']")
-        expect(page).to have_content(@pull_toy.name)
-        expect(page).to have_content(@pull_toy.description)
-        expect(page).to have_content("3")
-        expect(page).to have_content("$10")
-        expect(page).to have_content("$30")
-      end
-
-      expect(page).to have_content("Number of Items: 5")
-      expect(page).to have_content("Total: $230.00")
+      visit "/profile/orders/#{@order_2.id}"
+      expect(page).to_not have_link("Cancel Order")
     end
   end
 end
