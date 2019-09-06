@@ -62,7 +62,7 @@ RSpec.describe("Order Creation") do
       within "#item-#{@paper.id}" do
         expect(page).to have_link(@paper.name)
         expect(page).to have_link("#{@paper.merchant.name}")
-        expect(page).to have_content("$#{@paper.price}")
+        expect(page).to have_content("$40")
         expect(page).to have_content("2")
         expect(page).to have_content("$40")
       end

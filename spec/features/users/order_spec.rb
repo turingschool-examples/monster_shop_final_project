@@ -42,7 +42,6 @@ RSpec.describe 'User Order Page As a User' do
         expect(page).to have_content("230.0")
       end
 
-      save_and_open_page
       within "#user-orders-#{@order_2.id}" do
         expect(page).to have_link(@order_2.id)
         expect(page).to have_content(@order_2.created_at)
