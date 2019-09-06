@@ -10,9 +10,18 @@ Rails.application.routes.draw do
   get '/profile/edit', to: 'users#edit'
   resources :users, only: [:create, :update]
   get '/profile/edit_password', to: 'users#edit_password'
-  # post '/users', to: 'users#create'
-  # patch '/users/:id', to: 'users#update'
-  # get '/merchant', to: 'dashboard#index'
+
+  get '/profile/orders', to: 'user/orders#index'
+
+
+
+#unsure what to do with these routes at this point
+  get "/orders/new", to: "orders#new"
+  post "/orders", to: "orders#create"
+  get "/orders/:id", to: "orders#show"
+
+
+
   namespace :merchant do
     get '/', to: 'dashboard#index', as: :dashboard
   end
@@ -51,7 +60,4 @@ Rails.application.routes.draw do
   delete "/cart/:item_id", to: "cart#remove_item"
   patch "/cart/:item_id/:increment_decrement", to: "cart#increment_decrement"
 
-  get "/orders/new", to: "orders#new"
-  post "/orders", to: "orders#create"
-  get "/orders/:id", to: "orders#show"
 end
