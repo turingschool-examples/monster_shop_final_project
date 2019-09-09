@@ -24,6 +24,9 @@
       <th>Price</th>
       <th>Quantity</th>
       <th>Subtotal</th>
+      <% if @order.cancelled? %>
+        <th>Status</th>
+      <% end %>
     </tr>
   <% @order.item_orders.each do |item_order|%>
     <tr>
@@ -33,6 +36,9 @@
         <td><p><%= number_to_currency(item_order.price)%></p></td>
         <td><p><%= item_order.quantity%></p></td>
         <td><p><%= number_to_currency(item_order.subtotal)%></p></td>
+        <% if @order.cancelled? %>
+        <td><p>unfulfilled</p></td>
+        <% end %>
       </section>
     </tr>
   <% end %>
@@ -45,5 +51,5 @@
   <p>Total: <%=number_to_currency(@order.grandtotal)%></p>
 </section>
 <% if @order.pending? %>
-  <%= link_to "Cancel Order"  %>
+  <%= link_to "Cancel Order", "/profile/orders/#{@order.id}", method: :delete%>
 <% end %>

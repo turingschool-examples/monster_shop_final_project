@@ -13,8 +13,7 @@ Rails.application.routes.draw do
 
   get '/profile/orders', to: 'user/orders#index'
   get '/profile/orders/:id', to: "user/orders#show"
-
-
+  delete '/profile/orders/:id', to: "user/orders#cancel"
 
 #unsure what to do with these routes at this point
   get "/orders/new", to: "orders#new"

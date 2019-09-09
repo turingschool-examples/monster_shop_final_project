@@ -40,5 +40,23 @@ RSpec.describe 'User Deletes Orders' do
       visit "/profile/orders/#{@order_2.id}"
       expect(page).to_not have_link("Cancel Order")
     end
+
+    it "status and view changes when I cancel an order" do
+      visit "/profile/orders/#{@order_1.id}"
+
+      click_on "Cancel Order"
+
+      expect(current_path).to eq("/profile/orders/#{@order_1.id}")
+
+      within "#item-#{@tire.id}" do
+        expect(page).to have_content("unfulfilled")
+      end
+
+      within "#item-#{@pull_toy.id}" do
+        expect(page).to have_content("unfulfilled")
+      end
+      @order_1.reload
+       expect(@order_1.status).to eq("cancelled")
+    end
   end
 end

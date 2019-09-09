@@ -5,6 +5,13 @@ class User::OrdersController <ApplicationController
   end
 
   def show
+    # binding.pry
     @order = Order.find(params[:id])
+  end
+
+  def cancel
+    order = Order.find(params[:id])
+    order.update!(status: 3)
+    redirect_to "/profile/orders/#{order.id}"
   end
 end
