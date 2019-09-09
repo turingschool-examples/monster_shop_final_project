@@ -43,6 +43,8 @@ RSpec.describe("Order Creation") do
       within "#user-orders-#{new_order.id}" do
         expect(page).to have_content("pending")
       end
+
+      expect(page).to have_content("Cart: 0")
     end
   end
 end
