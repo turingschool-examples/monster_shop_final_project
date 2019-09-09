@@ -7,6 +7,15 @@ describe User, type: :model do
     it {should have_many(:orders)}
   end
 
+  describe "validations" do
+    it {should validate_presence_of :name}
+    it {should validate_presence_of :address}
+    it {should validate_presence_of :city}
+    it {should validate_presence_of :state}
+    it {should validate_presence_of :zip}
+    it {should validate_presence_of :email}
+  end
+
   describe "roles" do
     it "is a regular user by default" do
       user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc')
