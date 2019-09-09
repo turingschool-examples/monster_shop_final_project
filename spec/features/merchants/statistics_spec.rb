@@ -15,11 +15,12 @@ RSpec.describe 'merchant show page', type: :feature do
       @tire = @meg.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
       @pull_toy = @brian.items.create(name: "Pull Toy", description: "Great pull toy!", price: 10, image: "http://lovencaretoys.com/image/cache/dog/tug-toy-dog-pull-9010_2-800x800.jpg", inventory: 32)
       @dog_bone = @brian.items.create(name: "Dog Bone", description: "They'll love it!", price: 20, image: "https://img.chewy.com/is/image/catalog/54226_MAIN._AC_SL1500_V1534449573_.jpg", active?:false, inventory: 21)
-      @user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc', password_confirmation: '123abc')
+      @user_1 = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc', password_confirmation: '123abc')
+      @user_2 = User.create(name: 'Meg', address: '123 Stang St', city: 'Hershey', state: 'CO', zip: 80210, email: 'meg@hotmail.com', password: '123abc', password_confirmation: '123abc')
 
-      @order_1 = @user.orders.create!
-      @order_2 = @user.orders.create!
-      @order_3 = @user.orders.create!
+      @order_1 = @user_1.orders.create!(status: :shipped)
+      @order_2 = @user_2.orders.create!(status: :shipped)
+      @order_3 = @user_2.orders.create!(status: :shipped)
 
       @order_1.item_orders.create!(item: @tire, price: @tire.price, quantity: 2)
       @order_1.item_orders.create!(item: @pull_toy, price: @pull_toy.price, quantity: 3)
@@ -29,7 +30,7 @@ RSpec.describe 'merchant show page', type: :feature do
       @order_3.item_orders.create!(item: @dog_bone, price: @dog_bone.price, quantity: 5)
     end
 
-    xit 'I can see a merchants statistics' do
+    it 'I can see a merchants statistics' do
       visit "/merchants/#{@brian.id}"
 
       within ".merchant-stats" do
