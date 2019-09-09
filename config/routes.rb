@@ -16,9 +16,7 @@ Rails.application.routes.draw do
   delete '/profile/orders/:id', to: "user/orders#cancel"
 
 #unsure what to do with these routes at this point
-  get "/orders/new", to: "orders#new"
-  post "/orders", to: "orders#create"
-  get "/orders/:id", to: "orders#show"
+  resources :orders, only: [:create, :show, :index]
 
 
 

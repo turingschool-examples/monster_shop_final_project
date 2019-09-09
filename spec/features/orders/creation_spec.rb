@@ -6,6 +6,8 @@
 # - Details of the order:
 
 # - the date when the order was created
+require 'rails_helper'
+
 RSpec.describe("Order Creation") do
   describe "When I am logged in with items in my cart" do
     before(:each) do
@@ -28,51 +30,19 @@ RSpec.describe("Order Creation") do
       click_on "Add To Cart"
     end
 
-    xit 'when I click the checkout link a new order is created' do
+    it 'when I click the checkout link a new order is created' do
       visit "/cart"
       click_on "Checkout"
 
       expect(current_path).to eq(profile_orders_path)
 
-
-            within "#item-#{@paper.id}" do
-              expect(page).to have_link(@paper.name)
-              expect(page).to have_link("#{@paper.merchant.name}")
-              expect(page).to have_content("$#{@paper.price}")
-              expect(page).to have_content("2")
-              expect(page).to have_content("$40")
-            end
-
-            within "#item-#{@tire.id}" do
-              expect(page).to have_link(@tire.name)
-              expect(page).to have_link("#{@tire.merchant.name}")
-              expect(page).to have_content("$#{@tire.price}")
-              expect(page).to have_content("1")
-              expect(page).to have_content("$100")
-            end
-
-            within "#item-#{@pencil.id}" do
-              expect(page).to have_link(@pencil.name)
-              expect(page).to have_link("#{@pencil.merchant.name}")
-              expect(page).to have_content("$#{@pencil.price}")
-              expect(page).to have_content("1")
-              expect(page).to have_content("$2")
-            end
-
-            within "#grandtotal" do
-              expect(page).to have_content("Total: $142")
-            end
-
-            within "#datecreated" do
-              expect(page).to have_content(new_order.created_at)
-            end
+      expect(page).to have_content("Your order has been successfully created!")
 
       new_order = Order.last
 
-
-      expect(current_path).to eq("/orders/#{new_order.id}")
-
-
+      within "#user-orders-#{new_order.id}" do
+        expect(page).to have_content("pending")
+      end
     end
   end
 end
