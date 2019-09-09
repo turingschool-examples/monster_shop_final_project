@@ -12,8 +12,8 @@ RSpec.describe 'User Order Page As a User' do
       @user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc', password_confirmation: '123abc')
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
-      @order_1 = @user.orders.create(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033)
-      @order_2 = @user.orders.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80204)
+      @order_1 = @user.orders.create!
+      @order_2 = @user.orders.create!
 
       @order_1.item_orders.create!(item: @tire, price: @tire.price, quantity: 2)
       @order_1.item_orders.create!(item: @pull_toy, price: @pull_toy.price, quantity: 3)
