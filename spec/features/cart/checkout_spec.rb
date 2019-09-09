@@ -18,14 +18,40 @@ RSpec.describe 'Cart show' do
       @items_in_cart = [@paper,@tire,@pencil]
     end
 
-    it 'Theres a link to checkout' do
-      visit "/cart"
+    context "as a visitor" do
+      it "I must register or log in before I can check out" do
+        visit "/cart"
 
-      expect(page).to have_link("Checkout")
+        expect(page).to have_content("You must register or log in before you can check out.")
+        expect(page).to_not have_link("Checkout")
+      end
 
-      click_on "Checkout"
+      it "the words login and checkout are links to those pages" do
+        visit "/cart"
 
-      expect(current_path).to eq("/orders/new")
+        click_link("register")
+        expect(current_path).to eq(register_path)
+
+        visit "/cart"
+
+        click_link("log in")
+        expect(current_path).to eq(login_path)
+      end
+    end
+
+    context "as any user" do
+      it 'Theres a link to checkout' do
+        user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc', password_confirmation: '123abc')
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+
+        visit "/cart"
+
+        expect(page).to have_link("Checkout")
+
+        click_on "Checkout"
+
+        expect(current_path).to eq("/orders/new")
+      end
     end
   end
 
@@ -34,6 +60,8 @@ RSpec.describe 'Cart show' do
       visit "/cart"
 
       expect(page).to_not have_link("Checkout")
+      expect(page).to_not have_content("You must register or log in before you can check out.")
+      expect(page).to have_content("Cart is currently empty")
     end
   end
 end
