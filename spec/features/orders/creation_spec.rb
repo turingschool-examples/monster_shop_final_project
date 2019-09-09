@@ -28,7 +28,7 @@ RSpec.describe("Order Creation") do
       click_on "Add To Cart"
     end
 
-    it 'when I click the checkout link a new order is created' do
+    xit 'when I click the checkout link a new order is created' do
       visit "/cart"
       click_on "Checkout"
 
