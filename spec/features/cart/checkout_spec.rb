@@ -49,10 +49,6 @@ RSpec.describe 'Cart show' do
         visit "/cart"
 
         expect(page).to have_link("Checkout")
-
-        click_on "Checkout"
-
-        expect(current_path).to eq("/orders/new")
       end
     end
   end
