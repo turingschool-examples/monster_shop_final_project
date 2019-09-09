@@ -39,11 +39,13 @@ RSpec.describe 'Cart show' do
       end
     end
 
-    context "as any user" do
-      it 'Theres a link to checkout' do
+    context "as any logged in user" do
+      before :each do
         user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc', password_confirmation: '123abc')
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+      end
 
+      it 'Theres a link to checkout' do
         visit "/cart"
 
         expect(page).to have_link("Checkout")
