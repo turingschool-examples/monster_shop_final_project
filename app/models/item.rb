@@ -27,4 +27,9 @@ class Item <ApplicationRecord
   def self.active_items
     self.where(active?: true)
   end
+
+  def decrease_inventory(quantity)
+    new_inventory = self.inventory - quantity
+    self.update(inventory: new_inventory)
+  end
 end
