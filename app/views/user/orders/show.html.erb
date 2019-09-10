@@ -37,7 +37,7 @@
         <td><p><%= item_order.quantity%></p></td>
         <td><p><%= number_to_currency(item_order.subtotal)%></p></td>
         <% if @order.cancelled? %>
-        <td><p>unfulfilled</p></td>
+          <td><p><%= item_order.status %></p></td>
         <% end %>
       </section>
     </tr>

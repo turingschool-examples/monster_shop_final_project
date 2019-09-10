@@ -12,6 +12,7 @@ class User::OrdersController <ApplicationController
   def cancel
     order = Order.find(params[:id])
     order.update!(status: 3)
+    order.change_item_order_status
     redirect_to "/profile/orders/#{order.id}"
   end
 end
