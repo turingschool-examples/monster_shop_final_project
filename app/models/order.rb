@@ -16,6 +16,7 @@ class Order <ApplicationRecord
   def change_item_order_status
     item_orders.each do |item_order|
       item_order.update(status: 0)
+      item_order.item.update(inventory: item_order.item.inventory + item_order.quantity)
     end
   end
 
