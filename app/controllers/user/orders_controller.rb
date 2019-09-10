@@ -13,6 +13,7 @@ class User::OrdersController <ApplicationController
     order = Order.find(params[:id])
     order.update!(status: 3)
     order.change_item_order_status
+    flash[:success] = "The order has been cancelled"
     redirect_to "/profile/orders/#{order.id}"
   end
 end
