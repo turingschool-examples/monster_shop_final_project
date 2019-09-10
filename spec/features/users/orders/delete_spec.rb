@@ -29,7 +29,6 @@ RSpec.describe 'User Deletes Orders' do
       @order_2.item_orders.create!(item: @dog_bone, price: @dog_bone.price, quantity: 2)
       @order_2.item_orders.create!(item: @pull_toy, price: @pull_toy.price, quantity: 2)
       @order_2.item_orders.create!(item: @tire, price: @tire.price, quantity: 2)
-
     end
 
     it "I can see a button to cancel the order if the order is still pending" do
@@ -58,5 +57,40 @@ RSpec.describe 'User Deletes Orders' do
       @order_1.reload
        expect(@order_1.status).to eq("cancelled")
     end
+
+    it "returns quantities to merchants inventory when cancelled" do
+      visit "/profile/orders/#{@order_1.id}"
+
+      click_on "Cancel Order"
+
+      @tire.reload
+      @pull_toy.reload
+
+      expect(@tire.inventory).to eq(14)
+      expect(@pull_toy.inventory).to eq(35)
+    end
+
+    it "after it's canceled, I'm redirected properly" do
+      visit "/profile/orders/#{@order_1.id}"
+
+      click_on "Cancel Order"
+
+      expect(current_path).to eq("/profile/orders/#{@order_1.id}")
+      expect(page).to have_content("The order has been cancelled")
+      within "#user-orders-#{@order_1.id}" do
+        expect(page).to have_content("cancelled")
+      end
+    end
   end
 end
+
+
+# As a registered user
+# When I visit an order's show page
+# I see a button or link to cancel the order only if the order is still pending
+# When I click the cancel button for an order, the following happens:
+# - Each row in the "order items" table is given a status of "unfulfilled"
+# - The order itself is given a status of "cancelled"
+# - Any item quantities in the order that were previously fulfilled have their quantities returned to their respective merchant's inventory for that item.
+# - I see a flash message telling me the order is now cancelled
+# - And I see that this order now has an updated status of "cancelled"

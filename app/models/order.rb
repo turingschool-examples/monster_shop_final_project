@@ -12,4 +12,12 @@ class Order <ApplicationRecord
   def count_of_items
     item_orders.sum(:quantity)
   end
+
+  def change_item_order_status
+    item_orders.each do |item_order|
+      item_order.update(status: 0)
+      item_order.item.update(inventory: item_order.item.inventory + item_order.quantity)
+    end
+  end
+
 end
