@@ -7,8 +7,10 @@ class SessionsController <ApplicationController
     end
   end
 
-  def logout
-    # need to remove forget user
+  def destroy
+    flash[:success] = "You are now logged out."
+    session.delete(:user_id)
+    session.delete(:cart)
     redirect_to root_path
   end
 
