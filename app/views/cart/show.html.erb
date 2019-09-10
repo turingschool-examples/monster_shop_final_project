@@ -35,8 +35,7 @@
             <%= link_to "+", "/cart/#{item.id}/increment", method: :patch %>
             <%= link_to "-", "/cart/#{item.id}/decrement", method: :patch %>
           </p>
-          <p><%= link_to "Remove", "/cart/#{item.id}",method: :delete %></p>
-        </center>
+          <p><%= link_to "Remove", remove_item_path(item), method: :delete %></p>
         </td>
       <td>
         <p><%=number_to_currency(cart.subtotal(item))%></p>
@@ -46,9 +45,13 @@
 </table>
   <p>Total: <%= number_to_currency(cart.total) %></p>
   <p><%= link_to "Empty Cart", "/cart", method: :delete %></p>
-  <p><%= link_to "Checkout", "/orders/new", method: :get %></p>
+  <% if current_user %>
+    <p><%= link_to "Checkout", orders_path, method: :post %></p>
+  <% else %>
+    <p>You must <%= link_to "register", register_path %> or <%= link_to "log in", login_path %> before you can check out.</p>
+  <% end %>
 <% else %>
-  <h3 align= "center">Cart is currently empty</h3>
+    <h3 align= "center">Cart is currently empty</h3>
 <% end %>
-<table>
+
 </center>

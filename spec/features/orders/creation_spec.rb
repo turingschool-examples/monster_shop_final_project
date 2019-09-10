@@ -6,12 +6,13 @@
 # - Details of the order:
 
 # - the date when the order was created
-RSpec.describe("Order Creation") do
-  describe "When I check out from my cart" do
-    before(:each) do
-      @user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc', password_confirmation: '123abc')
+require 'rails_helper'
 
-      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+RSpec.describe("Order Creation") do
+  describe "When I am logged in with items in my cart" do
+    before(:each) do
+      user = User.create(name: 'Brian', address: '123 Zanti St', city: 'Denver', state: 'CO', zip: 80210, email: 'brian@hotmail.com', password: '123abc', password_confirmation: '123abc')
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
 
       @mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
       @meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
@@ -27,90 +28,23 @@ RSpec.describe("Order Creation") do
       click_on "Add To Cart"
       visit "/items/#{@pencil.id}"
       click_on "Add To Cart"
-
-      visit "/cart"
-      click_on "Checkout"
     end
 
-    it 'I can create a new order' do
-      name = "Bert"
-      address = "123 Sesame St."
-      city = "NYC"
-      state = "New York"
-      zip = 10001
+    it 'when I click the checkout link a new order is created' do
+      visit "/cart"
+      click_on "Checkout"
 
-      fill_in :name, with: name
-      fill_in :address, with: address
-      fill_in :city, with: city
-      fill_in :state, with: state
-      fill_in :zip, with: zip
+      expect(current_path).to eq(profile_orders_path)
 
-      click_button "Create Order"
+      expect(page).to have_content("Your order has been successfully created!")
 
       new_order = Order.last
 
-      expect(current_path).to eq("/orders/#{new_order.id}")
-
-      within '.shipping-address' do
-        expect(page).to have_content(name)
-        expect(page).to have_content(address)
-        expect(page).to have_content(city)
-        expect(page).to have_content(state)
-        expect(page).to have_content(zip)
+      within "#user-orders-#{new_order.id}" do
+        expect(page).to have_content("pending")
       end
 
-      within "#item-#{@paper.id}" do
-        expect(page).to have_link(@paper.name)
-        expect(page).to have_link("#{@paper.merchant.name}")
-        expect(page).to have_content("$40")
-        expect(page).to have_content("2")
-        expect(page).to have_content("$40")
-      end
-
-      within "#item-#{@tire.id}" do
-        expect(page).to have_link(@tire.name)
-        expect(page).to have_link("#{@tire.merchant.name}")
-        expect(page).to have_content("$#{@tire.price}")
-        expect(page).to have_content("1")
-        expect(page).to have_content("$100")
-      end
-
-      within "#item-#{@pencil.id}" do
-        expect(page).to have_link(@pencil.name)
-        expect(page).to have_link("#{@pencil.merchant.name}")
-        expect(page).to have_content("$#{@pencil.price}")
-        expect(page).to have_content("1")
-        expect(page).to have_content("$2")
-      end
-
-      within "#grandtotal" do
-        expect(page).to have_content("Total: $142")
-      end
-
-      within "#datecreated" do
-        expect(page).to have_content(new_order.created_at)
-      end
+      expect(page).to have_content("Cart: 0")
     end
-
-    it 'i cant create order if info not filled out' do
-      name = ""
-      address = "123 Sesame St."
-      city = "NYC"
-      state = "New York"
-      zip = 10001
-
-      fill_in :name, with: name
-      fill_in :address, with: address
-      fill_in :city, with: city
-      fill_in :state, with: state
-      fill_in :zip, with: zip
-
-      click_button "Create Order"
-
-      expect(page).to have_content("Please complete address form to create an order.")
-      expect(page).to have_button("Create Order")
-    end
-
-
   end
 end

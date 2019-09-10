@@ -2,6 +2,7 @@ class Merchant <ApplicationRecord
   has_many :items
   has_many :item_orders, through: :items
   has_many :users
+  has_many :orders, through: :item_orders
 
   validates_presence_of :name,
                         :address,
@@ -23,7 +24,10 @@ class Merchant <ApplicationRecord
   end
 
   def distinct_cities
-    item_orders.joins('INNER JOIN orders ON orders.id  = item_orders.order_id').pluck('DISTINCT city')
+    orders
+      .joins("inner join users on orders.user_id = users.id")
+      .where(status: :shipped)
+      .distinct
+      .pluck(:city)
   end
-
 end
