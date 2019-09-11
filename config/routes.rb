@@ -22,7 +22,10 @@ Rails.application.routes.draw do
 
   namespace :merchant do
     get '/', to: 'dashboard#index', as: :dashboard
+    resources :items, only: :index
+    resources :orders, only: :show
   end
+
   namespace :admin do
     get '/', to: 'dashboard#index', as: :dashboard
     get '/users', to: 'dashboard#index'

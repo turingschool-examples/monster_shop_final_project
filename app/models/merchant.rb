@@ -30,4 +30,10 @@ class Merchant <ApplicationRecord
       .distinct
       .pluck(:city)
   end
+
+
+  def item_orders_from_merchant(order_id)
+    item_orders.where(order_id: order_id)
+  end
+
 end
